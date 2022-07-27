@@ -2,7 +2,7 @@
 # A bash based installer for droidian in the Poco X3/NFC
 # Licensed under the GPLv2
 clear
-DROOTFS="https://github.com/droidian-images/rootfs-api29gsi-all/releases/download/nightly/droidian-rootfs-api29gsi-arm64_20220726.zip"
+DROOTFS="https://github.com/droidian-images/rootfs-api29gsi-all/releases/download/nightly/droidian-rootfs-api29gsi-arm64_20220727.zip"
 DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
 DTWRP=https://mirror.bardia.tech/surya/twrp-latest.img
 echo -e "Is Your Device Surya or Karna? (S/K)"
