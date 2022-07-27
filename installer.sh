@@ -2,43 +2,32 @@
 # A bash based installer for droidian in the Poco X3/NFC
 # Licensed under the GPLv2
 clear
-DROOTFS="https://github.com/droidian-images/rootfs-api29gsi-all/releases/download/nightly/droidian-rootfs-api29gsi-arm64_20220727.zip"
+DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep "browser_download_url" | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3  | tr -d \" )"
 DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
 DTWRP=https://mirror.bardia.tech/surya/twrp-latest.img
-echo -e "Is Your Device Surya or Karna? (S/K)"
-read -r CODENAME
-if [ "$CODENAME" = S ]; then
-    DBOOT="https://surya.bardia.tech/boot-surya.img"
-    DDTBO="https://surya.bardia.tech/dtbo-surya.img"
-    DVBMETA="https://surya.bardia.tech/vbmeta-surya.img"
-fi
-if [ "$CODENAME" = s ]; then
-    DBOOT="https://surya.bardia.tech/boot-surya.img"
-    DDTBO="https://surya.bardia.tech/dtbo-surya.img"
-    DVBMETA="https://surya.bardia.tech/vbmeta-surya.img"
-fi
-if [ "$CODENAME" = K ]; then
-    DBOOT="https://surya.bardia.tech/boot-karna.img"
-    DDTBO="https://surya.bardia.tech/dtbo-karna.img"
-    DVBMETA="https://surya.bardia.tech/vbmeta-karna.img"
-fi
-if [ "$CODENAME" = k ]; then
-    DBOOT="https://surya.bardia.tech/boot-surya.img"
-    DDTBO="https://surya.bardia.tech/dtbo-karna.img"
-    DVBMETA="https://surya.bardia.tech/vbmeta-karna.img"
-fi
 if [ "$(arch)" = x86_64 ]; then
     ARIA2BIN="$(dirname "$0")"/support/x86_64/aria2c
 fi
 if [ "$(arch)" = x86_64 ]; then
     ADBBIN="$(dirname "$0")"/support/x86_64/adb
-fi
-if [ "$(arch)" = x86_64 ]; then
     FASTBOOTBIN="$(dirname "$0")"/support/x86_64/fastboot
+    ARIA2BIN="$(dirname "$0")"/support/x86_64/aria2c
 fi
-echo -e "Please plug-in your phone ( Press Enter if done )"
+echo -e "You need latest MIUI A10 for this ROM if you havent flashed it do it now"
+echo -e "Boot into fastboot and plug-in your phone ( Enter when done )"
+read -r nothinglol
+CODENAME="$(fastboot getvar product 3>&1 1>&2 2>&3 | grep product | awk '{ print $2 }')"
+if [ "$CODENAME" = surya ]; then
+    DBOOT="https://surya.bardia.tech/boot-surya.img"
+    DDTBO="https://surya.bardia.tech/dtbo-surya.img"
+    DVBMETA="https://surya.bardia.tech/vbmeta-surya.img"
+fi
+if [ "$CODENAME" = karna ]; then
+    DBOOT="https://surya.bardia.tech/boot-karna.img"
+    DDTBO="https://surya.bardia.tech/dtbo-karna.img"
+    DVBMETA="https://surya.bardia.tech/vbmeta-karna.img"
+fi
 $ADBBIN start-server
-$ADBBIN reboot bootloader
 clear; echo; echo; echo; echo; echo; echo -e "Downloading TWRP"; echo -e "   [=                ]" # 15 spaces
 $ARIA2BIN -o "$(dirname "$0")"/cache/twrp-latest.img $DTWRP -q || echo "Downloading TWRP failed please try again or fix" && exit
 clear; echo; echo; echo; echo; echo; echo -e "Installing TWRP"; echo -e "   [==               ]" # 15 spaces
