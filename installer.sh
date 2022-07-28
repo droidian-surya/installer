@@ -5,6 +5,10 @@ clear
 DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep "browser_download_url" | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3  | tr -d \" )"
 DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
 DTWRP=https://mirror.bardia.tech/surya/twrp-latest.img
+if [ "$DROOTFS" = "" ]; then
+    echo "Please try again later"
+    exit
+fi
 if [ "$(arch)" = x86_64 ]; then
     ARIA2BIN="$(dirname "$0")/support/x86_64/aria2c --continue=true"
 fi
