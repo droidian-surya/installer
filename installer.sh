@@ -2,10 +2,6 @@
 # A bash based installer for droidian
 # Licensed under the GPLv2
 clear
-if [ "$DROOTFS" = "" ]; then
-    echo "Servers are updating please try again later."
-    exit
-fi
 if [ "$(arch)" = x86_64 ]; then
     ADBBIN="$(dirname "$0")"/support/x86_64/adb
     FASTBOOTBIN="$(dirname "$0")"/support/x86_64/fastboot
@@ -49,6 +45,10 @@ function echomenu() {
     echo
     echo
 }
+if [ "$DROOTFS" = "" ]; then
+    echo "Servers are updating please try again later."
+    exit
+fi
 $ADBBIN start-server
 echomenu
 echo -e "Downloading TWRP"
