@@ -2,9 +2,6 @@
 # A bash based installer for droidian in the Poco X3/NFC
 # Licensed under the GPLv2
 clear
-DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep browser_download_url | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3 | tr -d \")"
-DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
-DTWRP="https://mirror.bardia.tech/surya/twrp-latest.img"
 if [ "$DROOTFS" = "" ]; then
     echo "Servers are updating please try again later."
     exit
@@ -23,11 +20,17 @@ if [ "$CODENAME" = surya ]; then
     DBOOT="https://surya.bardia.tech/boot-surya.img"
     DDTBO="https://surya.bardia.tech/dtbo-surya.img"
     DVBMETA="https://surya.bardia.tech/vbmeta-surya.img"
+    DTWRP="https://mirror.bardia.tech/surya/twrp-latest.img"
+    DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep browser_download_url | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3 | tr -d \")"
+    DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
 fi
 if [ "$CODENAME" = karna ]; then
     DBOOT="https://surya.bardia.tech/boot-karna.img"
     DDTBO="https://surya.bardia.tech/dtbo-karna.img"
     DVBMETA="https://surya.bardia.tech/vbmeta-karna.img"
+    DTWRP="https://mirror.bardia.tech/surya/twrp-latest.img"
+    DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep browser_download_url | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3 | tr -d \")"
+    DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
 fi
 if [ -z "$XDG_CACHE_HOME" ]; then
     CACHE="$HOME"/.cache
