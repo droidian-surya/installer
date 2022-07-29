@@ -2,10 +2,6 @@
 # A bash based installer for droidian
 # Licensed under the GPLv2
 clear
-if [ "$DROOTFS" = "" ]; then
-    echo "Servers are updating please try again later."
-    exit
-fi
 if [ "$(arch)" = x86_64 ]; then
     ADBBIN="$(dirname "$0")"/support/x86_64/adb
     FASTBOOTBIN="$(dirname "$0")"/support/x86_64/fastboot
@@ -13,7 +9,7 @@ if [ "$(arch)" = x86_64 ]; then
 fi
 echo -e "You need to flash the latest MIUI Android 10 firmware for this OS if you havent flashed yet do it now (https://xiaomifirmwareupdater.com/miui/surya/stable/V12.0.9.0.QJGMIXM/)"
 echo -e "Boot into fastboot and plug-in your phone ( Power off the device and HardReset.info: press Volume Down + Power key for a short while when booted into fastboot press enter )"
-read -r 
+read -r
 CODENAME="$(fastboot getvar product 3>&1 1>&2 2>&3 | grep product | awk '{ print $2 }')"
 if [ "$CODENAME" = surya ]; then
     DBOOT="https://surya.bardia.tech/boot-surya.img"
@@ -22,14 +18,21 @@ if [ "$CODENAME" = surya ]; then
     DTWRP="https://mirror.bardia.tech/surya/twrp-latest.img"
     DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep browser_download_url | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3 | tr -d \")"
     DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
-fi
-if [ "$CODENAME" = karna ]; then
+
+elif [ "$CODENAME" = karna ]; then
     DBOOT="https://surya.bardia.tech/boot-karna.img"
     DDTBO="https://surya.bardia.tech/dtbo-karna.img"
     DVBMETA="https://surya.bardia.tech/vbmeta-karna.img"
     DTWRP="https://mirror.bardia.tech/surya/twrp-latest.img"
     DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep browser_download_url | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3 | tr -d \")"
     DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
+else
+    echo "Device is not supported by the installer."
+    exit
+fi
+if [ "$DROOTFS" = "" ]; then
+    echo "Servers are updating please try again later."
+    exit
 fi
 if [ -z "$XDG_CACHE_HOME" ]; then
     CACHE="$HOME"/.cache
