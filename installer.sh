@@ -1,5 +1,5 @@
 #!/bin/bash
-# A bash based installer for droidian in the Poco X3/NFC
+# A bash based installer for droidian
 # Licensed under the GPLv2
 clear
 if [ "$DROOTFS" = "" ]; then
@@ -13,7 +13,7 @@ if [ "$(arch)" = x86_64 ]; then
 fi
 echo -e "You need to flash the latest MIUI Android 10 firmware for this OS if you havent flashed yet do it now (https://xiaomifirmwareupdater.com/miui/surya/stable/V12.0.9.0.QJGMIXM/)"
 echo -e "Boot into fastboot and plug-in your phone ( Power off the device and HardReset.info: press Volume Down + Power key for a short while when booted into fastboot press enter )"
-read -r nothinglol
+read -r 
 CODENAME="$(fastboot getvar product 3>&1 1>&2 2>&3 | grep product | awk '{ print $2 }')"
 if [ "$CODENAME" = surya ]; then
     DBOOT="https://surya.bardia.tech/boot-surya.img"
