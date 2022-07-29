@@ -12,7 +12,6 @@ if [ "$(arch)" = x86_64 ]; then
     ARIA2BIN="$(dirname "$0")/support/x86_64/aria2c --continue=true --auto-file-renaming=false"
 fi
 echo -e "You need to flash the latest MIUI Android 10 firmware for this OS if you havent flashed yet do it now (https://xiaomifirmwareupdater.com/miui/surya/stable/V12.0.9.0.QJGMIXM/)"
-
 echo -e "Boot into fastboot and plug-in your phone ( Power off the device and HardReset.info: press Volume Down + Power key for a short while when booted into fastboot press enter )"
 read -r nothinglol
 CODENAME="$(fastboot getvar product 3>&1 1>&2 2>&3 | grep product | awk '{ print $2 }')"
@@ -112,9 +111,15 @@ echo -e "Installing ROOTFS"
 echo -e "   [================ ]" # 15 spaces
 $ADBBIN shell "twrp install /tmp/rootfs.zip"
 echomenu
+if [ $CODENAME = surya ]; then
 echo -e "Installing ADAPTATION"
 echo -e "   [=================]" # 15 spaces
 $ADBBIN shell "cd /tmp/ && unzip adaptation-surya-script.zip cd adaptation-surya-script && chmod +x install.sh && ./install.sh"
+elif [ $CODENAME = karna ]; then
+echo -e "Installing ADAPTATION"
+echo -e "   [=================]" # 15 spaces
+$ADBBIN shell "cd /tmp/ && unzip adaptation-surya-script.zip cd adaptation-surya-script && chmod +x install.sh && ./install.sh"
+fi
 echomenu
 echo -e "Rebooting... :)"
 echo -e "   [=================]" # 15 spaces
