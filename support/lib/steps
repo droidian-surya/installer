@@ -1,0 +1,113 @@
+#!/bin/bash
+function step() {
+    # -t <type> ( adb, fastboot, download )
+    # -c <command> ( push, pull, flash, etc )
+    # -a <argument>
+    local OPTIND arg a
+    while getopts ":t::c::a::b::s:" arg; do
+        case "${arg}" in
+        t)
+            T1="${OPTARG}"
+            ;;
+        c)
+            if [ -v $C1 ]; then
+                true
+            else
+                C1="${OPTARG}"
+                if [ -v $C2 ]; then
+                    true
+                else
+                    C2="${OPTARG}"
+                    if [ -v $C3 ]; then
+                        true
+                    else
+                        C3="${OPTARG}"
+                        if [ -v $C4 ]; then
+                            true
+                        else
+                            C4="${OPTARG}"
+                            if [ -v $C5 ]; then
+                                true
+                            else
+                                C5="${OPTARG}"
+                                if [ -v $C6 ]; then
+                                    true
+                                else
+                                    C6="${OPTARG}"
+                                    if [ -v $C7 ]; then
+                                        true
+                                    else
+                                        C7="${OPTARG}"
+                                    fi
+                                fi
+                            fi
+                        fi
+                    fi
+                fi
+            fi
+            ;;
+        a)
+            A1="${OPTARG}"
+            ;;
+        b)
+            BARSTATUS="${OPTARG}"
+            ;;
+        s)
+            MAXBAR="${OPTARG}"
+            ;;
+
+        *)
+            echo "What the hell did u do?"
+            ;;
+        esac
+    done
+    shift $((OPTIND - 1))
+    if [ "$T1" = fastboot ]; then
+        TYPE1R=fastboot
+    elif [ "$T1" = adb ]; then
+        TYPE1R=adb
+    elif [ "$T1" = download ]; then
+        TYPE1R="aria2c -q"
+    else
+        echo "Unkown Type"
+    fi
+    clear
+    echo
+    echo
+    function BAR() {
+        printf "["
+        for ((i = 1; i <= $BARSTATUS; i++)); do
+            printf "="
+        done
+        for ((i = 1; i <= $(($MAXBAR - $BARSTATUS)); i++)); do
+            printf " "
+        done
+        printf "]"
+    }
+    function MESSAGE() {
+        if [ "$T1" = download ]; then
+            echo "Downloading $A1"
+        fi
+        if [ "$T1" = adb ]; then
+            if [ "$C1" = push ]; then
+                echo "$T1 is Pushing $C2 to $A1"
+            fi
+            if [ "$C1" = reboot ]; then
+                if [ "$A1" = recovery ]; then
+                    echo "$T1 is rebooting phone to recovery.."
+                else
+                    echo "$T1 is rebooting phone.."
+                fi
+            fi
+        fi
+        if [ "$T1" = fastboot ]; then
+        if [ "$C1" = flash ]; then
+            echo "$T1 is flashing $C2 from $A1"
+        fi
+        fi
+    }
+    COMMAND="$TYPE1R $C1 $C2 $C3 $C4 $C5 $C6 $C7 $A1"
+    MESSAGE
+    echo "$(BAR)"
+    $COMMAND
+}

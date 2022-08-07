@@ -1,0 +1,9 @@
+#!/bin/bash
+function cacheinit() {
+export CACHE="$HOME/.cache"
+if [ -d "$CACHE/droidian-surya" ]; then
+    true
+else
+    mkdir -p "$CACHE"/droidian-surya
+fi
+}

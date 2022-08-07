@@ -1,0 +1,16 @@
+#!/bin/bash
+function cacheprompt {
+while true; do
+    read -r -p "Would you like to remove the cache directory used for the installation? (Y/n)" yn
+    case $yn in
+    [Yy]*) REMOVE_CACHE=true && break ;;
+    [Nn]*) REMOVE_CACHE=false && break ;;
+    *) echo "Please answer Y(es) or N(o)." ;;
+    esac
+done
+if [ "$REMOVE_CACHE" == "true" ]; then
+    rm -rf "$CACHE"/droidian-surya
+else
+    echo "Cache directory is available at $CACHE/droidian-surya"
+fi
+}

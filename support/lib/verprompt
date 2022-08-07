@@ -1,0 +1,11 @@
+#!/bin/bash
+function verprompt {
+while true; do
+    read -r -p "Do you wish to Install Nightly or Stable (bookworm)? (N/S)" ver
+    case $yn in
+    [Ss]*)  export DROIDIANVER=stablebookworm && break ;;
+    [Nn]*)  export DROIDIANVER=nightly && break ;;
+    *) echo "Please answer N(nightly) or S(stable)." ;;
+    esac
+done
+}

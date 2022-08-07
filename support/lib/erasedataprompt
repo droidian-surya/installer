@@ -1,0 +1,11 @@
+#!/bin/bash
+function eraseprompt {
+while true; do
+    read -r -p "Do you wish to erase your data? (Y/n) " yn
+    case $yn in
+    [Yy]*)  export ERASE_DATA=true && break ;;
+    [Nn]*)  export ERASE_DATA=false && break ;;
+    *) echo "Please answer Y(es) or N(o)." ;;
+    esac    
+done
+}

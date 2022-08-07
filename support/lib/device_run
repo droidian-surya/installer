@@ -1,0 +1,6 @@
+#!/bin/bash
+function device_run {
+    step -t download -c "-o" -c "$CACHE/droidian-installer/twrp-latest.img" -c "-q" -a "$DTWRP" || echo "Downloading TWRP"
+    step -t fastboot -c "flash" -c "recovery" -a "$CACHE/droidian-surya/twrp-latest.img" || echo "Flashig TWRP failed"
+    
+}

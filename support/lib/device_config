@@ -1,0 +1,41 @@
+#!/bin/bash
+function device_config {
+echo 
+printf "Enter your device's codename ( surya, karna ): "
+read -r CODENAME1
+if [ "$CODENAME1" = surya ]; then
+    DBOOT="https://surya.bardia.tech/boot-surya.img"
+    DDTBO="https://surya.bardia.tech/dtbo-surya.img"
+    DVBMETA="https://surya.bardia.tech/vbmeta-surya.img"
+    DTWRP="https://mirror.bardia.tech/surya/twrp-latest.img"
+    DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep browser_download_url | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3 | tr -d \")"
+    DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
+    echo -e "You need to flash the latest MIUI Android 10 firmware for this OS if you havent flashed yet do it now (https://xiaomifirmwareupdater.com/miui/surya/stable/V12.0.9.0.QJGMIXM/)"
+    echo -e "Boot into fastboot and plug-in your phone ( Power off the device and HardReset.info: press Volume Down + Power key for a short while when booted into fastboot press enter )"
+    read -r
+    CODENAME="$(fastboot getvar product 3>&1 1>&2 2>&3 | grep product | awk '{ print $2 }')"
+    if [ $CODENAME1 == $CODENAME ]; then
+        true
+        else
+        echo "Did you plug-in the correct phone?"
+    fi
+elif [ "$CODENAME1" = karna ]; then
+    DBOOT="https://surya.bardia.tech/boot-karna.img"
+    DDTBO="https://surya.bardia.tech/dtbo-karna.img"
+    DVBMETA="https://surya.bardia.tech/vbmeta-karna.img"
+    DTWRP="https://mirror.bardia.tech/surya/twrp-latest.img"
+    DROOTFS="$(curl -s https://api.github.com/repos/droidian-images/rootfs-api29gsi-all/releases | grep browser_download_url | grep droidian-rootfs-api29gsi-arm64 | grep nightly | cut -d : -f 2,3 | tr -d \")"
+    DADAPTSCRIPT="https://surya.bardia.tech/adaptation-surya-script.zip"
+    echo -e "You need to flash the latest MIUI Android 10 firmware for this OS if you havent flashed yet do it now (https://xiaomifirmwareupdater.com/miui/surya/stable/V12.0.9.0.QJGMIXM/)"
+    echo -e "Boot into fastboot and plug-in your phone ( Power off the device and HardReset.info: press Volume Down + Power key for a short while when booted into fastboot press enter )"
+    read -r
+    CODENAME="$(fastboot getvar product 3>&1 1>&2 2>&3 | grep product | awk '{ print $2 }')"
+else
+    echo "Device is not supported by the installer."
+    exit
+fi
+if [ "$DROOTFS" = "" ]; then
+    echo "Servers are updating please try again later."
+    exit
+fi
+}
